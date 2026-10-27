@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yago Martins | Portfólio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        [data-theme="dark"] {
+            --primary: #818cf8;
+            --primary-dark: #6366f1;
+            --secondary: #f472b6;
+            --bg-primary: #1e293b;
+            --bg-secondary: #0f172a;
+            --bg-tertiary: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border: #475569;
+            --shadow: rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            transition: all 0.3s;
+        }
+
+        /* ===== TELA DE LOGIN ===== */
+        .login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            padding: 2rem;
+        }
+
+        .login-screen.hidden {
+            display: none;
+        }
+
+        .login-container {
+            background: var(--bg-primary);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-header h1 {
+            font-size: 2rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-header p {
+            color: var(--text-secondary);
+        }
+
+        .login-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .login-tab {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .login-tab.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .login-form {
+            display: none;
+        }
+
+        .login-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .login-error {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 0.8rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .login-error.show {
+            display: block;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            background: var(--bg-primary);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 8px var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--bg-tertiary);
+            border-radius: 20px;
+        }
+
+        .user-avatar-small {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .icon-btn {
+            background: var(--bg-tertiary);
+            border: none;
+            padding: 0.6rem;
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--text-primary);
+            transition: all 0.3s;
+        }
+
+        .icon-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        /* ===== PROFILE SECTION ===== */
+        .profile-section {
+            background: var(--bg-primary);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px var(--shadow);
+            text-align: center;
+        }
+
+        .profile-photo-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .profile-photo {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--primary);
+            box-shadow: 0 8px 24px var(--shadow);
+        }
+
+        .photo-upload-btn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .photo-upload-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .admin-mode .photo-upload-btn {
+            display: flex;
+        }
+
+        .profile-name {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .profile-bio {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .profile-social {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            background: var(--bg-tertiary);
+            border-radius: 30px;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.3s;
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .social-link.instagram {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: white;
+        }
+
+        /* ===== LINKS SECTION ===== */
+        .links-section {
+            background: var(--bg-primary);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .link-card {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 2px solid var(--border);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .link-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px var(--shadow);
+        }
+
+        .link-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 0.5rem;
+        }
+
+        .link-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+        }
+
+        .link-url {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            word-break: break-all;
+        }
+
+        .link-url:hover {
+            text-decoration: underline;
+        }
+
+        .link-actions {
+            display: flex;
+            gap: 0.3rem;
+        }
+
+        .add-link-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--bg-tertiary);
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .add-link-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* ===== CHATBOT SECTION ===== */
+        .chat-section {
+            background: var(--bg-primary);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .chat-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .chat-messages {
+            height: 400px;
+            overflow-y: auto;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+
+        .chat-message {
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .chat-message.user {
+            flex-direction: row-reverse;
+        }
+
+        .chat-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .chat-message.ai .chat-avatar {
+            background: var(--gradient);
+        }
+
+        .chat-message.user .chat-avatar {
+            background: var(--primary);
+        }
+
+        .chat-bubble {
+            max-width: 70%;
+            padding: 0.8rem 1.2rem;
+            border-radius: 12px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+        }
+
+        .chat-message.user .chat-bubble {
+            background: var(--primary);
+            color: white;
+        }
+
+        .chat-input-container {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .chat-send-btn {
+            padding: 0.8rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .chat-send-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        /* ===== MODAL ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-primary);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .close-btn:hover {
+            color: var(--danger);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 1.5rem;
+        }
+
+        /* ===== NOTIFICATION ===== */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px var(--shadow);
+            z-index: 2000;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .profile-photo-container {
+                width: 150px;
+                height: 150px;
+            }
+
+            .profile-name {
+                font-size: 2rem;
+            }
+
+            main {
+                padding: 0 1rem;
+            }
+
+            .profile-section,
+            .links-section,
+            .chat-section {
+                padding: 1.5rem;
+            }
+
+            .chat-messages {
+                height: 300px;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- TELA DE LOGIN -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-container">
+            <div class="login-header">
+                <h1>Bem-vindo!</h1>
+                <p>Faça login para acessar o portfólio</p>
+            </div>
+
+            <div class="login-tabs">
+                <button class="login-tab active" onclick="switchLoginTab('login')">Entrar</button>
+                <button class="login-tab" onclick="switchLoginTab('register')">Criar Conta</button>
+            </div>
+
+            <div class="login-error" id="loginError"></div>
+
+            <!-- Form de Login -->
+            <form class="login-form active" id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="loginUsername">Usuário</label>
+                    <input type="text" id="loginUsername" required placeholder="Digite seu usuário">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Senha</label>
+                    <input type="password" id="loginPassword" required placeholder="Digite sua senha">
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Entrar
+                </button>
+            </form>
+
+            <!-- Form de Registro -->
+            <form class="login-form" id="registerForm" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label for="registerName">Nome</label>
+                    <input type="text" id="registerName" required placeholder="Seu nome">
+                </div>
+                <div class="form-group">
+                    <label for="registerUsername">Usuário</label>
+                    <input type="text" id="registerUsername" required placeholder="Escolha um usuário">
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Senha</label>
+                    <input type="password" id="registerPassword" required placeholder="Crie uma senha">
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-user-plus"></i> Criar Conta
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <header id="mainHeader" class="hidden">
+        <div class="header-content">
+            <div class="logo">Yago Martins</div>
+            <div class="header-actions">
+                <div class="user-info">
+                    <img src="" alt="User" class="user-avatar-small" id="headerAvatar">
+                    <span id="headerUsername">Usuário</span>
+                </div>
+                <button class="icon-btn" onclick="toggleTheme()" title="Tema">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="icon-btn" onclick="exportData()" title="Exportar">
+                    <i class="fas fa-download"></i>
+                </button>
+                <button class="icon-btn" onclick="document.getElementById('importFile').click()" title="Importar">
+                    <i class="fas fa-upload"></i>
+                </button>
+                <input type="file" id="importFile" style="display: none;" accept=".json" onchange="importData(event)">
+                <button class="icon-btn" onclick="logout()" title="Sair">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main id="mainContent" class="hidden">
+        <!-- Perfil -->
+        <section class="profile-section" id="profileSection">
+            <div class="profile-photo-container">
+                <img src="https://via.placeholder.com/200" alt="Foto de Perfil" class="profile-photo" id="profilePhoto">
+                <button class="photo-upload-btn" onclick="document.getElementById('photoInput').click()" title="Alterar foto">
+                    <i class="fas fa-camera"></i>
+                </button>
+                <input type="file" id="photoInput" accept="image/*" style="display: none;" onchange="updatePhoto(event)">
+            </div>
+            <h1 class="profile-name" id="profileName">Yago Martins</h1>
+            <p class="profile-bio" id="profileBio">Desenvolvedor | Criativo | Apaixonado por tecnologia</p>
+            
+            <div class="profile-social">
+                <a href="https://instagram.com/yagokaue.martins" target="_blank" class="social-link instagram">
+                    <i class="fab fa-instagram"></i>
+                    @yagokaue.martins
+                </a>
+            </div>
+
+            <div style="margin-top: 2rem;" id="adminControls">
+                <button class="btn btn-secondary" onclick="openEditProfileModal()">
+                    <i class="fas fa-edit"></i> Editar Perfil
+                </button>
+            </div>
+        </section>
+
+        <!-- Links -->
+        <section class="links-section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-link"></i> Meus Links
+                </h2>
+                <button class="btn btn-primary" onclick="openAddLinkModal()">
+                    <i class="fas fa-plus"></i> Adicionar Link
+                </button>
+            </div>
+            <div class="links-grid" id="linksGrid">
+                <!-- Links serão inseridos aqui -->
+            </div>
+        </section>
+
+        <!-- Chatbot -->
+        <section class="chat-section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-robot"></i> Assistente IA
+                </h2>
+            </div>
+            <div class="chat-container">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="chat-message ai">
+                        <div class="chat-avatar">IA</div>
+                        <div class="chat-bubble">
+                            Olá! Sou o assistente do Yago. Como posso te ajudar hoje? 😊
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-input-container">
+                    <input type="text" class="chat-input" id="chatInput" placeholder="Digite sua mensagem..." onkeypress="handleChatKeyPress(event)">
+                    <button class="chat-send-btn" onclick="sendMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal Editar Perfil -->
+    <div class="modal" id="editProfileModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Editar Perfil</h2>
+                <button class="close-btn" onclick="closeEditProfileModal()">&times;</button>
+            </div>
+            <form onsubmit="saveProfile(event)">
+                <div class="form-group">
+                    <label for="editName">Nome</label>
+                    <input type="text" id="editName" required>
+                </div>
+                <div class="form-group">
+                    <label for="editBio">Bio</label>
+                    <textarea id="editBio" rows="3"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeEditProfileModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Adicionar/Editar Link -->
+    <div class="modal" id="linkModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="linkModalTitle">Adicionar Link</h2>
+                <button class="close-btn" onclick="closeLinkModal()">&times;</button>
+            </div>
+            <form onsubmit="saveLink(event)">
+                <input type="hidden" id="linkId">
+                <div class="form-group">
+                    <label for="linkTitle">Título</label>
+                    <input type="text" id="linkTitle" required placeholder="Ex: Meu GitHub">
+                </div>
+                <div class="form-group">
+                    <label for="linkUrl">URL</label>
+                    <input type="url" id="linkUrl" required placeholder="https://...">
+                </div>
+                <div class="form-group">
+                    <label for="linkIcon">Ícone (opcional)</label>
+                    <select id="linkIcon">
+                        <option value="globe">🌐 Globo</option>
+                        <option value="github">💻 GitHub</option>
+                        <option value="linkedin">💼 LinkedIn</option>
+                        <option value="twitter">🐦 Twitter</option>
+                        <option value="youtube">📺 YouTube</option>
+                        <option value="envelope">✉️ Email</option>
+                        <option value="phone">📱 Telefone</option>
+                        <option value="map-marker-alt">📍 Localização</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeLinkModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // ===== CONFIGURAÇÃO =====
+        const ADMIN_USER = 'YAGO.MARTINS';
+        const ADMIN_PASS = '#X8090732a';
+
+        // ===== ESTADO DA APLICAÇÃO =====
+        let currentUser = null;
+        let isAdmin = false;
+        let appData = {
+            users: [],
+            profile: {
+                name: 'Yago Martins',
+                bio: 'Desenvolvedor | Criativo | Apaixonado por tecnologia',
+                photo: 'https://via.placeholder.com/200'
+            },
+            links: [
+                {
+                    id: '1',
+                    title: 'Instagram',
+                    url: 'https://instagram.com/yagokaue.martins',
+                    icon: 'instagram'
+                }
+            ]
+        };
+
+        // ===== INICIALIZAÇÃO =====
+        window.addEventListener('load', () => {
+            loadData();
+            checkSession();
+            loadTheme();
+        });
+
+        function loadData() {
+            const saved = localStorage.getItem('portfolioData');
+            if (saved) {
+                appData = JSON.parse(saved);
+            }
+        }
+
+        function saveData() {
+            localStorage.setItem('portfolioData', JSON.stringify(appData));
+        }
+
+        function checkSession() {
+            const session = localStorage.getItem('currentSession');
+            if (session) {
+                const sessionData = JSON.parse(session);
+                currentUser = sessionData;
+                isAdmin = sessionData.isAdmin;
+                showMainContent();
+            }
+        }
+
+        // ===== SISTEMA DE LOGIN =====
+        function switchLoginTab(tab) {
+            document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.login-form').forEach(f => f.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tab + 'Form').classList.add('active');
+            document.getElementById('loginError').classList.remove('show');
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            const errorDiv = document.getElementById('loginError');
+
+            // Verificar admin
+            if (username === ADMIN_USER && password === ADMIN_PASS) {
+                currentUser = { username, name: 'Yago Martins', isAdmin: true };
+                isAdmin = true;
+                saveSession();
+                showMainContent();
+                return;
+            }
+
+            // Verificar usuário registrado
+            const user = appData.users.find(u => u.username === username && u.password === password);
+            if (user) {
+                currentUser = { ...user, isAdmin: false };
+                isAdmin = false;
+                saveSession();
+                showMainContent();
+                return;
+            }
+
+            errorDiv.textContent = 'Usuário ou senha incorretos!';
+            errorDiv.classList.add('show');
+        }
+
+        function handleRegister(event) {
+            event.preventDefault();
+            const name = document.getElementById('registerName').value;
+            const username = document.getElementById('registerUsername').value;
+            const password = document.getElementById('registerPassword').value;
+            const errorDiv = document.getElementById('loginError');
+
+            // Verificar se usuário já existe
+            if (appData.users.find(u => u.username === username)) {
+                errorDiv.textContent = 'Este usuário já existe!';
+                errorDiv.classList.add('show');
+                return;
+            }
+
+            if (username === ADMIN_USER) {
+                errorDiv.textContent = 'Este usuário não está disponível!';
+                errorDiv.classList.add('show');
+                return;
+            }
+
+            // Criar novo usuário
+            const newUser = {
+                id: Date.now().toString(),
+                name,
+                username,
+                password,
+                createdAt: new Date().toISOString()
+            };
+
+            appData.users.push(newUser);
+            saveData();
+
+            currentUser = { ...newUser, isAdmin: false };
+            isAdmin = false;
+            saveSession();
+            showMainContent();
+        }
+
+        function saveSession() {
+            localStorage.setItem('currentSession', JSON.stringify(currentUser));
+        }
+
+        function logout() {
+            localStorage.removeItem('currentSession');
+            currentUser = null;
+            isAdmin = false;
+            location.reload();
+        }
+
+        function showMainContent() {
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('mainHeader').classList.remove('hidden');
+            document.getElementById('mainContent').classList.remove('hidden');
+            
+            updateUI();
+        }
+
+        function updateUI() {
+            // Atualizar header
+            document.getElementById('headerUsername').textContent = currentUser.name || currentUser.username;
+            document.getElementById('headerAvatar').src = appData.profile.photo;
+
+            // Atualizar perfil
+            document.getElementById('profileName').textContent = appData.profile.name;
+            document.getElementById('profileBio').textContent = appData.profile.bio;
+            document.getElementById('profilePhoto').src = appData.profile.photo;
+
+            // Mostrar/ocultar controles de admin
+            const adminControls = document.getElementById('adminControls');
+            const profileSection = document.getElementById('profileSection');
+            
+            if (isAdmin) {
+                adminControls.classList.remove('hidden');
+                profileSection.classList.add('admin-mode');
+            } else {
+                adminControls.classList.add('hidden');
+                profileSection.classList.remove('admin-mode');
+            }
+
+            renderLinks();
+        }
+
+        // ===== PERFIL =====
+        function openEditProfileModal() {
+            if (!isAdmin) {
+                showNotification('Apenas o administrador pode editar o perfil!', 'error');
+                return;
+            }
+            document.getElementById('editName').value = appData.profile.name;
+            document.getElementById('editBio').value = appData.profile.bio;
+            document.getElementById('editProfileModal').classList.add('active');
+        }
+
+        function closeEditProfileModal() {
+            document.getElementById('editProfileModal').classList.remove('active');
+        }
+
+        function saveProfile(event) {
+            event.preventDefault();
+            if (!isAdmin) return;
+
+            appData.profile.name = document.getElementById('editName').value;
+            appData.profile.bio = document.getElementById('editBio').value;
+            saveData();
+            updateUI();
+            closeEditProfileModal();
+            showNotification('Perfil atualizado!');
+        }
+
+        function updatePhoto(event) {
+            if (!isAdmin) {
+                showNotification('Apenas o administrador pode alterar a foto!', 'error');
+                return;
+            }
+
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    appData.profile.photo = e.target.result;
+                    saveData();
+                    updateUI();
+                    showNotification('Foto atualizada!');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // ===== LINKS =====
+        function renderLinks() {
+            const grid = document.getElementById('linksGrid');
+            
+            if (appData.links.length === 0) {
+                grid.innerHTML = '<p style="color: var(--text-secondary); text-align: center; grid-column: 1/-1;">Nenhum link adicionado ainda.</p>';
+                return;
+            }
+
+            grid.innerHTML = appData.links.map(link => `
+                <div class="link-card">
+                    <div class="link-card-header">
+                        <div>
+                            <div class="link-title"><i class="fas fa-${link.icon || 'globe'}"></i> ${link.title}</div>
+                            <a href="${link.url}" target="_blank" class="link-url">${link.url}</a>
+                        </div>
+                        ${isAdmin ? `
+                            <div class="link-actions">
+                                <button class="icon-btn" onclick="editLink('${link.id}')" title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="icon-btn" onclick="deleteLink('${link.id}')" title="Remover">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('') + `
+                ${isAdmin ? '<button class="add-link-btn" onclick="openAddLinkModal()"><i class="fas fa-plus"></i> Adicionar Novo Link</button>' : ''}
+            `;
+        }
+
+        function openAddLinkModal() {
+            if (!isAdmin) {
+                showNotification('Apenas o administrador pode adicionar links!', 'error');
+                return;
+            }
+            document.getElementById('linkModalTitle').textContent = 'Adicionar Link';
+            document.getElementById('linkId').value = '';
+            document.getElementById('linkTitle').value = '';
+            document.getElementById('linkUrl').value = '';
+            document.getElementById('linkIcon').value = 'globe';
+            document.getElementById('linkModal').classList.add('active');
+        }
+
+        function editLink(id) {
+            if (!isAdmin) return;
+            const link = appData.links.find(l => l.id === id);
+            if (link) {
+                document.getElementById('linkModalTitle').textContent = 'Editar Link';
+                document.getElementById('linkId').value = link.id;
+                document.getElementById('linkTitle').value = link.title;
+                document.getElementById('linkUrl').value = link.url;
+                document.getElementById('linkIcon').value = link.icon || 'globe';
+                document.getElementById('linkModal').classList.add('active');
+            }
+        }
+
+        function closeLinkModal() {
+            document.getElementById('linkModal').classList.remove('active');
+        }
+
+        function saveLink(event) {
+            event.preventDefault();
+            if (!isAdmin) return;
+
+            const id = document.getElementById('linkId').value;
+            const title = document.getElementById('linkTitle').value;
+            const url = document.getElementById('linkUrl').value;
+            const icon = document.getElementById('linkIcon').value;
+
+            if (id) {
+                const link = appData.links.find(l => l.id === id);
+                if (link) {
+                    link.title = title;
+                    link.url = url;
+                    link.icon = icon;
+                }
+            } else {
+                appData.links.push({
+                    id: Date.now().toString(),
+                    title,
+                    url,
+                    icon
+                });
+            }
+
+            saveData();
+            renderLinks();
+            closeLinkModal();
+            showNotification('Link salvo!');
+        }
+
+        function deleteLink(id) {
+            if (!isAdmin) return;
+            if (confirm('Tem certeza que deseja remover este link?')) {
+                appData.links = appData.links.filter(l => l.id !== id);
+                saveData();
+                renderLinks();
+                showNotification('Link removido!');
+            }
+        }
+
+        // ===== CHATBOT IA =====
+        function handleChatKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+
+            addChatMessage('user', message);
+            input.value = '';
+
+            // Simular digitação
+            setTimeout(() => {
+                const response = generateAIResponse(message);
+                addChatMessage('ai', response);
+            }, 500);
+        }
+
+        function addChatMessage(type, text) {
+            const messagesDiv = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${type}`;
+            
+            const avatar = type === 'ai' ? 'IA' : (currentUser.name || currentUser.username).charAt(0).toUpperCase();
+            
+            messageDiv.innerHTML = `
+                <div class="chat-avatar">${avatar}</div>
+                <div class="chat-bubble">${text}</div>
+            `;
+            
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function generateAIResponse(message) {
+            const msg = message.toLowerCase();
+            
+            // Respostas inteligentes baseadas em palavras-chave
+            if (msg.includes('olá') || msg.includes('oi') || msg.includes('hey')) {
+                return `Olá! Que bom ter você aqui! 😊 Como posso te ajudar?`;
+            }
+            
+            if (msg.includes('yago') || msg.includes('dono') || msg.includes('criador')) {
+                return `O Yago é um desenvolvedor apaixonado por tecnologia! Você pode conhecê-lo melhor pelo Instagram: @yagokaue.martins 📸`;
+            }
+            
+            if (msg.includes('instagram') || msg.includes('insta')) {
+                return `O Instagram do Yago é @yagokaue.martins! Clica no link ali em cima para seguir ele! 📱`;
+            }
+            
+            if (msg.includes('trabalho') || msg.includes('emprego') || msg.includes('contratar')) {
+                return `Para propostas de trabalho ou parcerias, entre em contato pelo Instagram ou pelos links disponíveis no perfil! 💼`;
+            }
+            
+            if (msg.includes('projeto') || msg.includes('portfolio') || msg.includes('trabalhos')) {
+                return `O Yago está sempre trabalhando em projetos incríveis! Dá uma olhada nos links do perfil para ver mais! 🚀`;
+            }
+            
+            if (msg.includes('obrigado') || msg.includes('valeu') || msg.includes('thanks')) {
+                return `De nada! Fico feliz em ajudar! 😊 Se tiver mais alguma dúvida, é só perguntar!`;
+            }
+            
+            if (msg.includes('tchau') || msg.includes('bye') || msg.includes('até')) {
+                return `Até mais! Foi ótimo conversar com você! 👋 Volte sempre!`;
+            }
+            
+            if (msg.includes('ajuda') || msg.includes('help')) {
+                return `Claro! Posso te ajudar com:\n• Informações sobre o Yago\n• Links das redes sociais\n• Projetos e trabalhos\n• Contato para parcerias\n\nO que você gostaria de saber?`;
+            }
+
+            if (msg.includes('nome') || msg.includes('quem é você')) {
+                return `Sou o assistente virtual do Yago Martins! Estou aqui para te ajudar a conhecer mais sobre ele e responder suas dúvidas! 🤖`;
+            }
+
+            if (msg.includes('contato') || msg.includes('email') || msg.includes('telefone')) {
+                return `A melhor forma de entrar em contato com o Yago é pelo Instagram: @yagokaue.martins! Ele responde por lá! 📩`;
+            }
+
+            // Resposta padrão
+            const responses = [
+                `Interessante! Me conta mais sobre isso? 🤔`,
+                `Hmm, não tenho certeza sobre isso. Mas posso te ajudar com informações sobre o Yago ou seus projetos! 😊`,
+                `Legal! Se quiser saber mais sobre o Yago, é só perguntar! Estou aqui para ajudar! 👍`,
+                `Boa pergunta! No momento, posso te ajudar com informações sobre o perfil e links. O que mais gostaria de saber? 💡`
+            ];
+            
+            return responses[Math.floor(Math.random() * responses.length)];
+        }
+
+        // ===== EXPORT/IMPORT =====
+        function exportData() {
+            const exportObj = {
+                profile: appData.profile,
+                links: appData.links,
+                exportDate: new Date().toISOString(),
+                exportedBy: currentUser.username
+            };
+            
+            const blob = new Blob([JSON.stringify(exportObj, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `portfolio-backup-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showNotification('Dados exportados!');
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    if (confirm('Isso substituirá o perfil e links atuais. Deseja continuar?')) {
+                        if (data.profile) appData.profile = data.profile;
+                        if (data.links) appData.links = data.links;
+                        saveData();
+                        updateUI();
+                        showNotification('Dados importados com sucesso!');
+                    }
+                } catch (error) {
+                    showNotification('Erro ao importar arquivo!', 'error');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // ===== TEMA =====
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+
+        // ===== NOTIFICAÇÃO =====
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            
+            if (type === 'error') {
+                notification.style.background = 'var(--danger)';
+            }
+            
+            document.body.appendChild(notification);
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Fechar modais ao clicar fora
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
